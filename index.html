@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Query Params and Headers</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+    }
+    pre {
+      background: #f5f5f5;
+      padding: 1rem;
+      border-radius: 5px;
+    }
+    #redirectBtn {
+      display: none;
+      background-color: #4CAF50; /* Green */
+      color: white;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    #redirectBtn:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>Query Parameters</h1>
+  <pre id="query-params"></pre>
+
+  <h1>Header-like Info (Client-Side)</h1>
+  <pre id="headers"></pre>
+
+  <button id="redirectBtn">Redirect</button>
+
+  <script>
+    // Parse the query parameters
+    const searchParams = new URLSearchParams(window.location.search);
+    let queryParamsOutput = '';
+
+    for (const [key, value] of searchParams.entries()) {
+      queryParamsOutput += `${key}: ${value}\n`;
+    }
+
+    document.getElementById('query-params').textContent = queryParamsOutput || 'No query parameters found.';
+
+    // Attempt to show minimal header-like info (User-Agent, Language)
+    const headerInfo = {
+      userAgent: navigator.userAgent,
+      language: navigator.language,
+    };
+
+    document.getElementById('headers').textContent = JSON.stringify(headerInfo, null, 2);
+
+    // Handle redirect button
+    const redirectUri = searchParams.get('redirect_uri');
+    if (redirectUri) {
+      const redirectBtn = document.getElementById('redirectBtn');
+      redirectBtn.style.display = 'inline-block';
+      redirectBtn.addEventListener('click', () => {
+        window.location.href = redirectUri;
+      });
+    }
+  </script>
+</body>
+</html>
